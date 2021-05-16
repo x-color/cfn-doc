@@ -1,11 +1,11 @@
 # cfn-doc
 
-This is a tool for generating document of CloudFormation template.
+This is a tool for generating a document of CloudFormation template.
 
 ## Usage
 
 ```
-cfn-doc is a tool for generating document of CloudFormation template.
+cfn-doc is a tool for generating a document of CloudFormation template.
 
 Usage:
   cfn-doc [OPTION] <TEMPLATE FILE>
@@ -15,11 +15,19 @@ Options:
     	File name. Write to file instead of stdout
 ```
 
+## Install
+
+```sh
+$ go install github.com/x-color/cfn-doc@latest
+```
+
+\*Required Go >= 1.16
+
 ## Sample
 
 Generated document
 
-```md
+```markdown
 # sample-template.yaml
 
 ## Description
