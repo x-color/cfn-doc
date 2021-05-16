@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: This template is sample CloudFormation template.
+  It deploys EC2 Instance and Security Group of the instance.
+
+Parameters:
+  AmiId:
+    Type: AWS::EC2::Image::Id
+
+  Subnet:
+    Description: Id of Subnet in your Virtual Private Cloud (VPC)
+    Type: AWS::EC2::Subnet::Id
+
+  VPC:
+    Description: Id of your existing Virtual Private Cloud (VPC)
+    Type: AWS::EC2::VPC::Id
+
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.small
+
+Resources:
+  Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !Ref Subnet
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+
+Outputs:
+  InstanceId:
+    Description: Id of deployed instance
+    Value: !Ref Instance
+    Export:
+      Name: !Sub ${AWS::StackName}-InstanceId
+
+  InstanceSecurityGroupId:
+    Value: !Ref InstanceSecurityGroup
+    Export:
+      Name: !Sub ${AWS::StackName}-InstanceSecurityGroupId
