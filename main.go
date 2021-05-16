@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	_ "embed"
+	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"html/template"
@@ -14,26 +16,26 @@ import (
 
 type resource struct {
 	ID   string
-	Type string `yaml:"Type,omitempty"`
+	Type string `yaml:"Type,omitempty" json:"Type,omitempty"`
 }
 
 type output struct {
 	ID          string
-	Description string `yaml:"Description,omitempty"`
+	Description string `yaml:"Description,omitempty" json:"Description,omitempty"`
 }
 
 type parameter struct {
 	ID          string
-	Description string `yaml:"Description,omitempty"`
-	Type        string `yaml:"Type,omitempty"`
-	Default     string `yaml:"Default,omitempty"`
+	Description string `yaml:"Description,omitempty" json:"Description,omitempty"`
+	Type        string `yaml:"Type,omitempty" json:"Type,omitempty"`
+	Default     string `yaml:"Default,omitempty" json:"Default,omitempty"`
 }
 
 type cfnTemplate struct {
-	Description string               `yaml:"Description,omitempty"`
-	Parameters  map[string]parameter `yaml:"Parameters,omitempty"`
-	Resources   map[string]resource  `yaml:"Resources,omitempty"`
-	Outputs     map[string]output    `yaml:"Outputs,omitempty"`
+	Description string               `yaml:"Description,omitempty" json:"Description,omitempty"`
+	Parameters  map[string]parameter `yaml:"Parameters,omitempty" json:"Parameters,omitempty"`
+	Resources   map[string]resource  `yaml:"Resources,omitempty" json:"Resources,omitempty"`
+	Outputs     map[string]output    `yaml:"Outputs,omitempty" json:"Outputs,omitempty"`
 }
 
 type templateValue struct {
@@ -128,6 +130,11 @@ func readCFnTemplate(filename string) (cfnTemplate, error) {
 
 	raw := cfnTemplate{}
 	err = yaml.Unmarshal(b, &raw)
+	if !errors.Is(err, new(yaml.TypeError)) {
+		return raw, err
+	}
+
+	err = json.Unmarshal(b, &raw)
 	return raw, err
 }
 
