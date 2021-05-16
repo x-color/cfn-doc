@@ -7,6 +7,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"html"
 	"html/template"
 	"os"
 	"sort"
@@ -151,11 +152,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	doc, err := generateDoc(arg.filename, cfn)
+	rawDoc, err := generateDoc(arg.filename, cfn)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+
+	doc := []byte(html.UnescapeString(string(rawDoc)))
 
 	if arg.output == "" {
 		fmt.Println(string(doc))
