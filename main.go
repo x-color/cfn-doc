@@ -96,7 +96,7 @@ func parseArgs(args []string) (argument, error) {
 	flags := flag.NewFlagSet(args[0], flag.ExitOnError)
 	flags.StringVar(&arg.output, "o", "", "File name. Write to file instead of stdout")
 	flags.Usage = func() {
-		fmt.Fprintf(os.Stdout, "cfn-doc is a tool for generating document of CloudFormation template.\n\n")
+		fmt.Fprintf(os.Stdout, "cfn-doc is a tool for generating a document of CloudFormation template.\n\n")
 		fmt.Fprintf(os.Stdout, "Usage: \n")
 		fmt.Fprintf(os.Stdout, "  cfn-doc [OPTION] <TEMPLATE FILE>\n\n")
 		fmt.Fprintf(os.Stdout, "Options: \n")
