@@ -2,28 +2,44 @@
 
 ## Description
 
+{{ if .Description -}}
 {{ .Description }}
+{{- else -}}
+*No description*
+{{- end }}
 
 ## Parameters
 
+{{ if .Parameters -}}
 | Name | Description | Type | Default |
 | --- | --- | --- | --- |
 {{- range .Parameters }}
 | {{ .ID }} |{{ if .Description }} {{ .Description }} {{ else }} - {{ end}}| {{ .Type }} |{{ if .Default }} {{ .Default }} {{ else }} - {{ end}}|
 {{- end }}
+{{- else -}}
+*No parameters*
+{{- end }}
 
 ## Outputs
 
+{{ if .Outputs -}}
 | Name | Description |
 | --- | --- |
 {{- range .Outputs }}
 | {{ .ID }} |{{ if .Description }} {{ .Description }} {{ else }} - {{ end}}|
 {{- end }}
+{{- else -}}
+*No outputs*
+{{- end }}
 
 ## Resources
 
+{{ if .Resources -}}
 | Resource | Service Type |
 | --- | --- |
 {{- range .Resources }}
 | {{ .ID }} | {{ .Type }} |
+{{- end }}
+{{- else -}}
+*No resources*
 {{- end }}
