@@ -1,0 +1,29 @@
+# {{ .Filename }}
+
+## Description
+
+{{ .Description }}
+
+## Parameters
+
+| Name | Description | Type | Default |
+| --- | --- | --- | --- |
+{{- range .Parameters }}
+| {{ .ID }} |{{ if .Description }} {{ .Description }} {{ else }} - {{ end}}| {{ .Type }} |{{ if .Default }} {{ .Default }} {{ else }} - {{ end}}|
+{{- end }}
+
+## Outputs
+
+| Name | Description |
+| --- | --- |
+{{- range .Outputs }}
+| {{ .ID }} |{{ if .Description }} {{ .Description }} {{ else }} - {{ end}}|
+{{- end }}
+
+## Resources
+
+| Resource | Service Type |
+| --- | --- |
+{{- range .Resources }}
+| {{ .ID }} | {{ .Type }} |
+{{- end }}
