@@ -13,6 +13,7 @@ Usage:
 Options:
   -o string
     	File name. Write to file instead of stdout
+  -v	Show version
 ```
 
 ## Install
