@@ -107,7 +107,11 @@ func parseArgs(args []string) (argument, error) {
 		return argument{}, err
 	}
 
+	if len(flags.Args()) == 0 {
+		return argument{}, errors.New("template file name is required")
+	}
 	arg.filename = flags.Args()[0]
+
 	return arg, nil
 }
 
