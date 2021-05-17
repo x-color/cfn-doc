@@ -15,6 +15,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var version string
+
 type resource struct {
 	ID   string
 	Type string `yaml:"Type,omitempty" json:"Type,omitempty"`
@@ -88,6 +90,7 @@ func newTemplateValue(filename string, raw cfnTemplate) templateValue {
 
 type argument struct {
 	output   string
+	version  bool
 	filename string
 }
 
@@ -95,6 +98,7 @@ func parseArgs(args []string) (argument, error) {
 	arg := argument{}
 	flags := flag.NewFlagSet(args[0], flag.ExitOnError)
 	flags.StringVar(&arg.output, "o", "", "File name. Write to file instead of stdout")
+	flags.BoolVar(&arg.version, "v", false, "Show version")
 	flags.Usage = func() {
 		fmt.Fprintf(os.Stdout, "cfn-doc is a tool for generating a document of CloudFormation template.\n\n")
 		fmt.Fprintf(os.Stdout, "Usage: \n")
@@ -105,6 +109,10 @@ func parseArgs(args []string) (argument, error) {
 	err := flags.Parse(args[1:])
 	if err != nil {
 		return argument{}, err
+	}
+
+	if arg.version {
+		return arg, nil
 	}
 
 	if len(flags.Args()) == 0 {
@@ -148,6 +156,11 @@ func main() {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
+	}
+
+	if arg.version {
+		fmt.Println(version)
+		return
 	}
 
 	cfn, err := readCFnTemplate(arg.filename)
